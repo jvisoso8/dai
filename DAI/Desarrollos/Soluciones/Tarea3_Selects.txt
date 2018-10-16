@@ -1,0 +1,112 @@
+-- Select's de la tarea 3: TP2, ej. 2.
+
+-- a) 
+SELECT Nombre, Tipo
+FROM Cliente
+WHERE (Nombre>='F' And Nombre<'N') And Tipo In ('Aseg','Cont');
+
+
+-- b) 
+SELECT Nombre, Deducible
+FROM Servicio
+WHERE Deducible between 10000 and 30000
+ORDER BY Deducible DESC, Nombre;
+
+
+-- c) 
+SELECT p.Folio, Prima, IdP, Fecha, Monto
+FROM Póliza p, Pago pa
+WHERE p.Folio=pa.Folio
+ORDER BY p.Folio DESC, Fecha;
+
+
+-- d) 
+SELECT Nombre, p.Folio, Descrip, FechaIni
+FROM Póliza p, Asegurado a, Cliente c, Evento e
+WHERE p.Folio=a.Folio and a.IdCli=c.IdCli and a.IdCli=e.IdCli
+ORDER BY FechaIni DESC;
+
+
+-- e) 
+SELECT c.Nombre, Tipo, p.Folio, FechaIniVig, s.Nombre
+FROM Canal AS c, Póliza AS p, Tiene AS t, Servicio AS s
+WHERE Tipo='Agente' And FechaIniVig>='2018-04-01' 
+  And c.IdC=p.IdC And p.Folio=t.Folio And t.IdS=s.IdS
+ORDER BY FechaIniVig;
+
+
+-- f) 
+SELECT Nombre, p.Folio, Fecha, Monto
+FROM Cliente AS c, Contratante AS co, Póliza AS p, Pago AS pa
+WHERE Fecha Between '01-12-2017' And '31-03-2018'
+  And c.IdCli=co.IdCli And co.IdCli=p.IdCli And p.Folio=pa.Folio;
+
+
+-- g) 
+SELECT Nombre
+FROM Canal
+WHERE IdC not in
+  (select IdC 
+  from Póliza
+  where FechaIniVig between '01-01-2018' and '31-03-2018')
+ORDER BY Nombre;
+
+
+-- h) 
+SELECT Folio, FechaIniVig
+FROM Póliza
+WHERE Folio not in
+  (select Folio 
+   from Servicio s, Tiene t
+   where Nombre='Deportes peligrosos' and s.IdS=t.IdS);
+
+
+-- i) 
+select p.Folio, FechaIniVig
+from Póliza p, Tiene t, Servicio s
+where Nombre='Premier 100' and p.Folio=t.Folio and t.IdS=s.IdS
+  and p.Folio in
+  (select Folio
+   from Tiene t, Servicio s
+   where Nombre='Médica móvil' and t.IdS=s.IdS);
+
+
+-- j) 
+select c.IdCli, Nombre
+from Cliente c, Evento e
+where c.IdCli=e.IdCli
+  union
+select c.IdCli, c.Nombre
+from Cliente c, Asegurado a, tiene t, Servicio s
+where s.Nombre='Acceso clínicas' and c.IdCli=a.IdCli and a.Folio=t.Folio and t.IdS=s.IdS;
+
+
+-- k) 
+select p.Folio, count(*) as "Cantidad de pagos", sum(Monto) as "Monto total de pagos"
+from Póliza p, Pago pa
+where p.Folio=pa.Folio
+group by p.Folio;
+
+
+-- l) 
+SELECT avg(Prima) AS Promedio_primas
+FROM Póliza AS p, Asegurado AS a, Evento AS e
+WHERE p.Folio=a.Folio and a.IdCli=e.IdCli;
+
+
+-- m) 
+select Nombre, count(*) "Cantidad de asegurados"
+from Cliente c, Contratante co, Póliza p, Asegurado a
+where c.IdCli=co.IdCli and co.IdCli=p.IdCli and p.Folio=a.Folio
+group by Nombre
+having count(*)>=2;
+
+
+-- n) 
+select Nombre, count(*) "Cantidad de pólizas"
+from Servicio s, Tiene t
+where s.IdS=t.IdS
+group by Nombre
+having count(*)>2;
+
+

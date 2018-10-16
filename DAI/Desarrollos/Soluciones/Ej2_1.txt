@@ -1,0 +1,207 @@
+-- Ej. 2.1
+
+-- a)
+select idprof, nomprof
+from prof
+
+-- c)
+select nomal, prom
+from alum
+where carr='neg' and prom>=9
+
+-- d)
+select carr
+from alum
+
+-- e)
+select distinct carr
+from alum
+order by carr desc
+
+-- f)
+select nomal, carr, prom
+from alum
+order by carr, prom desc
+
+-- g)
+-- Versión 1.
+select nomprof, nommat, claveg
+from prof, grupo, mater
+where prof.idprof=grupo.idprof and grupo.clavem=mater.clavem --Equijuntas.
+order by nomprof, nommat
+
+-- Versión 2: con alias.
+select nomprof, nommat, claveg
+from prof p, grupo g, mater m
+where p.idprof=g.idprof and g.clavem=m.clavem --Equijuntas.
+order by nomprof, nommat
+
+-- h)
+-- Versión 1
+select nomal, nommat, calif, fecha
+from alum a, historial h, mater m
+where fecha between '01-01-2017' and '31-12-2017'
+  and a.cu=h.cu and h.clavem=m.clavem
+
+-- Versión 2
+select nomal, nommat, calif, fecha
+from alum a, historial h, mater m
+where fecha like '%2017%'
+  and a.cu=h.cu and h.clavem=m.clavem
+
+-- Versión 3
+select nomal, nommat, calif, fecha
+from alum a, historial h, mater m
+where year(fecha)=year(getdate())-1
+  and a.cu=h.cu and h.clavem=m.clavem
+
+-- j)
+select nomal, carr
+from alum
+where cu in
+	(select cu
+	from inscrito)
+
+-- k)
+select nomal, carr
+from alum
+where cu not in
+	(select cu
+	from inscrito)
+
+-- l)
+select nomprof, categoría
+from prof
+where idprof not in
+	(select idprof
+	from grupo)
+
+-- m)
+select avg(prom) "Prom. de Negocios", count(prom) "Cant. de alumnos de Neg."
+from alum
+where carr='neg'
+
+-- n)
+-- Versión 1.
+select count(nommat) "Cant. de materias"
+from mater
+
+-- Versión 2: sólo con count se puede escribir * como parámetro.
+select count(*) "Cant. de materias"
+from mater
+
+-- o)
+select distinct count(carr)
+from alum
+
+-- p)
+select nomal,count(claveg) "Cant. de cursos"
+from alum a, inscrito i
+where a.cu=i.cu
+group by nomal
+
+-- q)
+select nomal,count(*) "Cant. de cursos"
+from alum a, inscrito i
+where a.cu=i.cu
+group by nomal
+having count(*)>=2
+
+-- r)
+select nommat,
+	avg(convert(real,calif)) "Prom. de califs. aprobatorias"
+from mater m, historial h
+where calif>=6 and year(fecha)=year(getdate())-1 
+	and m.clavem=h.clavem
+group by nommat
+
+-- s)
+select nomal, sum(creds) "Total de créditos"
+from alum a, inscrito i, grupo g, mater m
+where a.cu=i.cu and i.claveg=g.claveg and g.clavem=m.clavem
+group by nomal
+
+-- t)
+select nomal, sum(creds) "Total de créditos"
+from alum a, inscrito i, grupo g, mater m
+where a.cu=i.cu and i.claveg=g.claveg and g.clavem=m.clavem
+group by nomal
+having sum(creds)>=15
+
+-- u)
+select nommat, count(*) "Cant. de alums. de neg. o mec"
+from alum a, inscrito i, grupo g, mater m
+where carr in ('neg','mec') and
+	a.cu=i.cu and i.claveg=g.claveg and g.clavem=m.clavem
+group by nommat
+having count(*)>1
+
+-- v)
+select nommat, nomal, carr
+from alum a, inscrito i, grupo g, mater m
+where carr in ('neg','mec') and
+	a.cu=i.cu and i.claveg=g.claveg and g.clavem=m.clavem
+    and nommat in	
+	(select nommat
+	from alum a, inscrito i, grupo g, mater m
+	where carr in ('neg','mec') and
+		a.cu=i.cu and i.claveg=g.claveg and g.clavem=m.clavem
+	group by nommat
+	having count(*)>1)
+
+
+-- x)
+-- Versión 1: sql estándar.
+select nomal
+from alum a, inscrito i, grupo g, mater m
+where nommat='Economía I' and
+	a.cu=i.cu and i.claveg=g.claveg and g.clavem=m.clavem
+	and nomal in
+	(select nomal
+	from alum a, inscrito i, grupo g, mater m
+	where nommat='Matemáticas I' and
+		a.cu=i.cu and i.claveg=g.claveg and g.clavem=m.clavem)
+
+--- Versión 2: sólo reconocida en algunos manejadores.
+select nomal
+from alum a, inscrito i, grupo g, mater m
+where nommat='Economía I' and
+	a.cu=i.cu and i.claveg=g.claveg and g.clavem=m.clavem
+    intersect
+select nomal
+from alum a, inscrito i, grupo g, mater m
+where nommat='Matemáticas I' and
+	a.cu=i.cu and i.claveg=g.claveg and g.clavem=m.clavem
+
+-- Varsión 3: mostrando también todas las materias que llevan esos alumnos.
+select nomal, nommat
+from alum a, inscrito i, grupo g, mater m
+where a.cu=i.cu and i.claveg=g.claveg and g.clavem=m.clavem
+    and nomal in
+	(select nomal
+	from alum a, inscrito i, grupo g, mater m
+	where nommat='Economía I' and
+		a.cu=i.cu and i.claveg=g.claveg and g.clavem=m.clavem
+       	   intersect
+	select nomal
+	from alum a, inscrito i, grupo g, mater m
+	where nommat='Matemáticas I' and
+		a.cu=i.cu and i.claveg=g.claveg and g.clavem=m.clavem)
+
+
+-- y)
+select nomal, carr
+from alum
+where carr='com'
+   union
+select nomal, nommat
+from alum a, inscrito i, grupo g, mater m
+where nommat='Matemáticas I' and
+	a.cu=i.cu and i.claveg=g.claveg and g.clavem=m.clavem
+
+
+
+
+
+
+

@@ -1,0 +1,34 @@
+-- 1
+select f.folio, fecha, nomsoft
+from factura as f, ventasw as vs, software as s
+where f.folio = vs.folio and vs.idsw = s.idsw and numLics > 1
+order by nomsoft desc;
+
+-- 2
+select distinct c.noserie, modelo, fecha
+from computadora as c, conhwadicional as hwa, factura as f
+where year(fecha)=year(getdate())-1 and f.folio = c.folio and c.noserie = hwa.noserie
+order by modelo;
+
+-- 3
+select nomprov, nomsoft
+from proveedor as p, software as s
+where p.rfcprov = s.rfcprov and p.RfcProv not in
+	(select RfcProv
+	from Hardware)
+
+-- 4
+select f.folio, monto
+from Factura as f, ventahw as vhw
+where f.folio = vhw.folio and f.Folio in
+	(select folio
+	from Computadora)
+
+-- 5
+select c.noserie, modelo, count(*) 'Cant. paquetes de sw'
+from computadora as c, conswadicional as swa
+where c.noserie = swa.noserie
+group by c.noserie, modelo
+having count(*) < 2
+
+

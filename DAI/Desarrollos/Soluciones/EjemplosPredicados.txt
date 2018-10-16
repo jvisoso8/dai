@@ -1,0 +1,73 @@
+-- Ejemplos de predicados.
+-- De comparación.
+-- Alumnos con promedio > 8.
+select *
+from alum
+where prom>8
+
+-- Alumnos con promedio <= 8.
+select *
+from alum
+where prom!>8
+
+-- Between
+-- Alumnos con promedio entre 7 y 8
+select *
+from alum
+where prom between 7 and 8
+
+-- Alumnos con promedio no entre 7 y 8
+select *
+from alum
+where prom between 7 and 8
+
+
+-- In
+-- Profs. con categoría 'tc' o 'mt
+select *
+from prof
+where categoría in ('tc','mt')
+
+
+-- Like
+-- Materias que inician con E.
+select *
+from mater
+where nommat like 'E%'
+
+-- Alumnos con una 'a' en la 2a. posición.
+select *
+from alum
+where nomal like '_a%'
+
+
+-- Lógico
+-- Materias con clave en el rango [600,699]
+-- o que sean de 8 créditos.
+select *
+from mater
+where (clavem between 600 and 699) or (creds=8)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

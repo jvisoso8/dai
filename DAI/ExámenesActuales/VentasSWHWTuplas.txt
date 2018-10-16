@@ -1,0 +1,103 @@
+-- Datos de Cliente.
+insert into cliente values 
+	('Rfc1','Horacio Rodríguez','D1','Tel1');
+insert into cliente values 
+	('Rfc2','Gabriela González','D2','Tel2');
+insert into cliente values 
+	('Rfc3','David Álvarez','D3','Tel3');
+insert into cliente values 
+	('Rfc4','Patricia Lozano','D4','Tel4');
+
+-- Datos de Proveedor.
+insert into proveedor values 
+	('Rfc1','Prov. 1','TelP1');
+insert into proveedor values 
+	('Rfc2','Prov. 2','TelP2');
+insert into proveedor values 
+	('Rfc3','Prov. 3','TelP3');
+insert into proveedor values 
+	('Rfc4','Prov. 4','TelP4');
+
+-- Datos del Hardware.
+insert into Hardware values
+	(1,'Multimedia','M1','C1','Rfc3');
+insert into Hardware values
+	(2,'Impresora laser','IL1','C2','Rfc1');
+insert into Hardware values
+	(3,'Disco sólido','DS1','1 TB','Rfc3');
+insert into Hardware values
+	(4,'Ram','R1','C4','Rfc2');
+
+-- Datos del Software.
+insert into Software values
+	(1,'Visual C#.Net','Des1','V14','Rfc1');
+insert into Software values
+	(2,'Java','Des2','V8','Rfc4');
+insert into Software values
+	(3,'SW Architect','Des3','V3','Rfc1');
+insert into Software values
+	(4,'MatLab','Des4','V5','Rfc2');
+insert into Software values
+	(5,'SQL Server','Des5','V14','Rfc2');
+
+-- Datos de las facturas.
+insert into Factura values
+	(1,'1/4/2018',65000.00,'Rfc1');
+insert into Factura values
+	(2,'23/8/2017',31000.00,'Rfc2');
+insert into Factura values
+	(3,'15/9/2017',50000.00,'Rfc2');
+insert into Factura values
+	(4,'3/11/2017',25000.00,'Rfc4');
+insert into Factura values
+	(5,'5/2/2018',22500.00,'Rfc3');
+insert into Factura values
+	(6,'24/3/2018',20000.00,'Rfc1');
+insert into Factura values
+	(7,'30/12/2017',17000.00,'Rfc3');
+
+-- Datos de las computadoras.
+insert into Computadora values
+	(1,'Dell Optiplex',3.40,'Intel i3','Rfc1',1);
+insert into Computadora values
+	(2,'HP Envy 700',3.40,'Intel i7','Rfc2',5);
+insert into Computadora values
+	(3,'Dell Precision',3.80,'Intel E3','Rfc3',2);
+insert into Computadora values
+	(4,'Vaio Pro',3.00,'Intel i5','Rfc1',3);
+insert into Computadora values
+	(5,'HP Envy Recline',4.00,'Intel i5','Rfc2',4);
+
+-- Datos del hardware adicional en las computadoras.
+insert into ConHWAdicional values (1,1);
+insert into ConHWAdicional values (1,2);
+insert into ConHWAdicional values (1,3);
+insert into ConHWAdicional values (2,2);
+insert into ConHWAdicional values (2,3);
+insert into ConHWAdicional values (3,3);
+insert into ConHWAdicional values (3,4);
+insert into ConHWAdicional values (4,1);
+insert into ConHWAdicional values (4,4);
+
+-- Datos del software adicional en las computadoras.
+insert into ConSWAdicional values (1,1);
+insert into ConSWAdicional values (1,3);
+insert into ConSWAdicional values (2,2);
+insert into ConSWAdicional values (3,1);
+insert into ConSWAdicional values (3,4);
+insert into ConSWAdicional values (4,2);
+insert into ConSWAdicional values (4,5);
+insert into ConSWAdicional values (5,3);
+insert into ConSWAdicional values (5,4);
+
+-- Datos de la venta de hardware.
+insert into VentaHW values (2,5,1);
+insert into VentaHW values (3,7,2);
+insert into VentaHW values (4,4,1);
+
+-- Datos de la venta de software.
+insert into VentaSW values (1,6,5);
+insert into VentaSW values (2,1,1);
+insert into VentaSW values (3,2,1);
+
+

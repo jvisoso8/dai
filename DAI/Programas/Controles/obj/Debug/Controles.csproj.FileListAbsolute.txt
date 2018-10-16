@@ -1,0 +1,9 @@
+C:\DAI\Programas\Controles\bin\Debug\Controles.exe.config
+C:\DAI\Programas\Controles\bin\Debug\Controles.exe
+C:\DAI\Programas\Controles\bin\Debug\Controles.pdb
+C:\DAI\Programas\Controles\obj\Debug\Controles.csprojResolveAssemblyReference.cache
+C:\DAI\Programas\Controles\obj\Debug\Controles.Form1.resources
+C:\DAI\Programas\Controles\obj\Debug\Controles.Properties.Resources.resources
+C:\DAI\Programas\Controles\obj\Debug\Controles.csproj.GenerateResource.Cache
+C:\DAI\Programas\Controles\obj\Debug\Controles.exe
+C:\DAI\Programas\Controles\obj\Debug\Controles.pdb

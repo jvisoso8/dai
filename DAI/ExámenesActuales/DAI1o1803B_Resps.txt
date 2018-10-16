@@ -1,0 +1,40 @@
+-- 1
+select f.folio, fecha, tipo
+from factura f, ventaHW vhw, hardware h
+where cant>1 and f.folio=vhw.folio and vhw.idhw=h.idhw 
+order by tipo
+
+-- 2
+select distinct c.noserie, modelo
+from factura f, computadora c, conswadicional swa
+where year(fecha)=year(getdate()) and f.folio=c.folio and c.noserie=swa.noserie 
+order by modelo desc
+
+-- 3
+select nomprov, tipo
+from proveedor p, hardware h
+where p.RfcProv=h.rfcprov and p.RfcProv not in
+	(select rfcprov
+	from software)
+
+-- 4
+select nomcli, count(*)
+from cliente c, factura f
+where c.rfccli=f.rfccli
+group by nomcli
+having count(*)<2
+union
+select nomcli, NomSoft
+from cliente c, factura f, ventasw vsw, software s
+where nomsoft='MatLab' and c.rfccli=f.rfccli and f.folio=vsw.folio and vsw.idsw=s.idsw
+
+-- 5
+select c.noserie, procesador, count(*) 'Cant. tipos de hw'
+from computadora c, ConHWAdicional hwa
+where c.noserie=hwa.NoSerie
+group by c.noserie, Procesador
+having count(*)>2
+
+
+
+

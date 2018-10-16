@@ -1,0 +1,48 @@
+--   Definición de la base de datos del mini-sistema escolar.
+
+--	ESQUEMA RELACIONAL DE LA BASE DE DATOS:
+--
+--	Prof(IdProf(PK), NomProf, Categoría)
+--	Alum(CU(PK), NomAl, Carr, Prom)
+--	Mater(ClaveM(PK), NomMat, Creds)
+--	Grupo(ClaveG(PK), Salón, IdProf(FK), ClaveM(FK))
+--	Inscrito(CU(PK,FK), ClaveG(PK,FK))
+--	Historial(Folio(PK), Calif, Fecha, CU(FK), ClaveM(FK))
+--
+--	DEFINICIÓN DE TABLAS
+
+create table Prof
+	(IdProf	   smallint	primary key,
+	NomProf	   char(30),
+	Categoría  char(2)	check (Categoría in ('tc','mt','tp')));
+
+create table Alum
+	(CU	   smallint	primary key,
+	NomAl	   char(30),
+	Carr	   char(3)	check (Carr in ('com','ind','mat','mec','neg','tel')),
+	Prom	   real		check (Prom is null
+				  	or Prom between 6 and 10));
+
+create table Mater
+	(ClaveM    smallint	primary key,
+	NomMat	   char(30)	unique,
+	Creds	   smallint	check (Creds between 2 and 12));
+
+
+create table Grupo
+	(ClaveG	   char(6)	primary key,
+	Salón	   char(8),
+	IdProf	   smallint	references Prof,
+	ClaveM 	   smallint	references Mater not null);
+	
+create table Inscrito
+	(CU	   smallint	references Alum,
+	ClaveG	   char(6)	references Grupo,  
+				primary key (CU,ClaveG));
+
+create table Historial
+	(Folio	   int		primary key,	
+	Calif	   smallint	check (Calif between 5 and 10),
+	Fecha	   datetime	check (Fecha > '1990-01-01'),
+	CU	   smallint	references Alum not null,
+	ClaveM	   smallint	references Mater not null);

@@ -1,0 +1,69 @@
+--   Definición de la base de datos de las ventas de software
+--	y hardware.
+--   DBMS: SQL Server.
+
+--   Definición de tablas.
+
+create table Cliente
+	(RfcCli	char(13)	primary key,
+	NomCli	varchar(30),
+	DomCli	varchar(50),
+	TelCli	char(13));
+
+create table Proveedor
+	(RfcProv	char(13)	primary key,
+	NomProv	varchar(30),
+	TelProv	char(13));
+
+create table Hardware
+	(IdHW		int	primary key,
+	Tipo		varchar(20),
+	Modelo	varchar(20),
+	Caracs	varchar(50),
+	RfcProv	char(13)	references Proveedor not null);
+
+create table Software
+	(IdSW		int	primary key,
+	NomSoft	varchar(20),
+	Descrip	varchar(50),
+	Versión	varchar(10),
+	RfcProv	char(13)	references Proveedor not null);
+
+create table Factura
+	(Folio	int	primary key,
+	Fecha		datetime,
+	Monto		money,
+	RfcCli	char(13)	references Cliente not null);
+
+create table Computadora
+	(NoSerie	int	primary key,
+	Modelo	varchar(20),
+	Velocidad	float,
+	Procesador	char(20),
+	RfcProv	char(13)	references Proveedor not null,
+	Folio		int		references Factura not null);
+
+create table ConHWAdicional
+	(NoSerie	int	references Computadora,
+	IdHW		int	references Hardware,
+				primary key (NoSerie, IdHW));
+
+create table ConSWAdicional
+	(NoSerie	int	references Computadora,
+	IdSW		int	references Software,
+				primary key (NoSerie, IdSW));
+
+create table VentaHW
+	(IdHW		int	references Hardware,
+	Folio		int	references Factura,
+	Cant		int,
+				primary key (IdHW,Folio));
+
+create table VentaSW
+	(IdSW		int	references Software,
+	Folio		int	references Factura,
+	NumLics	int,
+				primary key (IdSW,Folio));
+
+
+
