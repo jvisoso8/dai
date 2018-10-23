@@ -70,7 +70,7 @@ public partial class AdminAvalesPrest : System.Web.UI.Page {
     //Carga el nombre de todos los avales en DdlAvales.
     cadSql = "select * from Avales";
     GestorBD.consBD(cadSql, DSAvales, "Avales");
-    objComún.cargaDDL(DdlAvales, DSAvales, "Avales", "IdAval");
+    objComún.cargaDDL(DdlAvales, DSAvales, "Avales", "Nombre");
 
     //Indica la operación actual.
     LblMensaje.Text = "Operación: Alta";
@@ -95,7 +95,11 @@ public partial class AdminAvalesPrest : System.Web.UI.Page {
     //Recupera a GestorBD.
     GestorBD = (GestorBD.GestorBD)Session["GestorBD"];
 
-    idAval = Convert.ToInt16(DdlAvales.Text);   //Recupera la clave del aval.
+    //Recupera la clave del aval seleccionado.
+    cadSql = "select * from Avales where Nombre= '" + DdlAvales.Text + "'";
+    GestorBD.consBD(cadSql, DSAvales, "Aval");
+    fila = DSAvales.Tables["Aval"].Rows[0];
+    idAval = Convert.ToInt16(fila["IdAval"]);   
 
     //Si el monto es >= 50,000, hace el alta.
     if (Convert.ToInt32(TxtMonto.Text) >= 50000) {
@@ -146,7 +150,7 @@ public partial class AdminAvalesPrest : System.Web.UI.Page {
   //Elimina a la tupla elegida en el grid cuando se da clic a dicha tupla.
   protected void GrdAvalan_RowDeleting(object sender, GridViewDeleteEventArgs e) {
     int índiceFila;       //Índice de la fila elegida en el grid.
-    int índiceColInicial=2; //´Columna inicial a usar en el grid.
+    int índiceColInicial=2; //Columna inicial a usar en el grid.
     GridViewRow filaGrid;   //Tipo de la fila elegida en el grid.
 
     //Recupera el índice de la fila y la fila de datos elegida en el grid.
@@ -171,11 +175,19 @@ public partial class AdminAvalesPrest : System.Web.UI.Page {
 
   //Ejercicio extra: ejemplo de uso de una fila seleccionada en el grid.
   protected void GrdAvalan_SelectedIndexChanged(object sender, EventArgs e) {
+    int índiceFila;       //Índice de la fila elegida en el grid.
+    int índiceColInicial = 2; //Columna inicial a usar en el grid.
+    GridViewRow filaGrid;   //Tipo de la fila elegida en el grid.
 
+    índiceFila = GrdAvalan.SelectedIndex;
+    filaGrid = GrdAvalan.Rows[índiceFila];
+    GrdAvalan.Enabled = false;
+    desactivaControles();   //Habilita/deshabilita controles.
 
-
-    Response.Write(filaGrid.Cells[1].Text);
-
+    //Muestra los datos de la fila elegida.
+    Response.Write(filaGrid.Cells[índiceColInicial].Text+ " "+
+      filaGrid.Cells[índiceColInicial+1].Text);
   }
+
 }
 
